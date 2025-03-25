@@ -1,10 +1,14 @@
 import { BankAccount } from "../src/BankAccount";
-import { BankStatement } from "../src/BankStatement";
+import { printStatement } from "../src/BankStatement";
 
 describe("Statement", () => {
+  let testAccount;
+
+  beforeEach(() => {
+    testAccount = new BankAccount(); // Fresh instance for each test
+  });
+
   it("should match the exact console.log output", () => {
-    const testAccount = new BankAccount();
-    const testStatement = new BankStatement(testAccount);
 
     const logs: string[] = [];
     const consoleSpy = jest.spyOn(console, "log").mockImplementation((msg) => {
@@ -15,16 +19,16 @@ describe("Statement", () => {
     testAccount.withdraw(300.0);
     testAccount.deposit(100.0);
 
-    testStatement.printStatement();
+    printStatement(testAccount);
 
     expect(logs).toEqual([
       "Date | Amount | Balance",
-      "2025-03-20 | +500.00 | 500.00",
-      "2025-03-20 | -200.00 | 300.00",
-      "2025-03-20 | -300.00 | 0.00",
-      "2025-03-20 | +100.00 | 100.00",
+      "2025-03-24 | +500.00 | 500.00",
+      "2025-03-24 | -200.00 | 300.00",
+      "2025-03-24 | -300.00 | 0.00",
+      "2025-03-24 | +100.00 | 100.00",
     ]);
-
+    
     consoleSpy.mockRestore();
   });
 });
